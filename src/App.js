@@ -31,12 +31,26 @@ function App() {
   }
 
   const haddleSelectImgByID = async () => {
-    console.log("selection id = ", isSelectImgID)
-  }
+    // console.log("selection id = ", isSelectImgID)
+      for(let i = 0; i <  isArrayImg.length; i++){
+        // console.log(isArrayImg[i], isSelectImgID)
+        if(isArrayImg[i].TestID === isSelectImgID){
+          const payload = {
+              ID: isSelectImgID,
+              ArrayImg : isArrayImg[i].ArrayImg
+            }
+          console.log(payload)
+          const getMulitBase64 = await axios.post("https://demo-service-go-product-tour-zt27agut7a-as.a.run.app/api/send/mulit/img",payload)
+          console.log(getMulitBase64.data);
+          }
+        }
+        
+      }
+ 
 
   const haddleFetchArrayImg = async () => {
     const arrayImgPath = await axios.get("https://demo-service-go-product-tour-zt27agut7a-as.a.run.app/api/send/selectpath");
-    console.log(arrayImgPath.data)
+    // console.log(arrayImgPath.data)
     setIsArrayImg(arrayImgPath.data.body)
   }
 
@@ -78,7 +92,7 @@ function App() {
                   <option value="None">None</option>
                 {
                 isArrayImg.map((item) => 
-                    <option value={item.TestID}>
+                    <option key={item.TestID} value={item.TestID}>
                       {item.TestID}
                     </option>
                   )
@@ -99,7 +113,7 @@ function App() {
   
     );
 
-
+              
 }
 
 export default App;
