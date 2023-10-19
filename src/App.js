@@ -7,6 +7,7 @@ function App() {
   const [imgFile, setImgFile] = useState("");
   const [isText, setIsText] = useState("");
   const [isSelectImgID, setIsSelectImgID] = useState("");
+  const [strcutImageArray, setStrcutImageArray] = useState([]);
   const [isArrayImg, setIsArrayImg] = useState([]);
 
   const haddleFetchDebug = async () => {
@@ -32,16 +33,17 @@ function App() {
 
   const haddleSelectImgByID = async () => {
     // console.log("selection id = ", isSelectImgID)
-      for(let i = 0; i <  isArrayImg.length; i++){
-        // console.log(isArrayImg[i], isSelectImgID)
-        if(isArrayImg[i].TestID === isSelectImgID){
+      for(let i = 0; i <  strcutImageArray.length; i++){
+        // console.log(strcutImageArray[i], isSelectImgID)
+        if(strcutImageArray[i].TestID === isSelectImgID){
           const payload = {
               ID: isSelectImgID,
-              ArrayImg : isArrayImg[i].ArrayImg
+              ArrayImg : strcutImageArray[i].ArrayImg
             }
-          console.log(payload)
+          // console.log(payload)
           const getMulitBase64 = await axios.post("https://demo-service-go-product-tour-zt27agut7a-as.a.run.app/api/send/mulit/img",payload)
-          console.log(getMulitBase64.data);
+          // console.log(getMulitBase64.data);
+          setIsArrayImg(getMulitBase64.data.arrayImg)
           }
         }
         
@@ -51,7 +53,7 @@ function App() {
   const haddleFetchArrayImg = async () => {
     const arrayImgPath = await axios.get("https://demo-service-go-product-tour-zt27agut7a-as.a.run.app/api/send/selectpath");
     // console.log(arrayImgPath.data)
-    setIsArrayImg(arrayImgPath.data.body)
+    setStrcutImageArray(arrayImgPath.data.body)
   }
 
   const haddleImgId = (event) => {
@@ -66,6 +68,19 @@ function App() {
       <>
           <div className="App">
           <header className="App-header">
+            <div className='mini-img-container'>
+              {
+                (() => {
+                  if(isArrayImg.length !== 0){
+                    for(let i = 0; i < isArrayImg.length; i++){
+                      return(
+                        <img src={`data:image/png;base64,${isArrayImg[i]}`} width="60" height="60"/>
+                      )
+                    }
+                  }
+                })
+              }
+            </div>
             <div>
               {
                 imgFile !== "" && (
@@ -91,7 +106,7 @@ function App() {
                 >
                   <option value="None">None</option>
                 {
-                isArrayImg.map((item) => 
+                strcutImageArray.map((item) => 
                     <option key={item.TestID} value={item.TestID}>
                       {item.TestID}
                     </option>

@@ -42,3 +42,9 @@
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.mini-img-container{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
