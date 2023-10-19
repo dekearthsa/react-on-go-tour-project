@@ -42,7 +42,7 @@ function App() {
             }
           // console.log(payload)
           const getMulitBase64 = await axios.post("https://demo-service-go-product-tour-zt27agut7a-as.a.run.app/api/send/mulit/img",payload)
-          // console.log(getMulitBase64.data);
+          // console.log(getMulitBase64.data.arrayImg);
           setIsArrayImg(getMulitBase64.data.arrayImg)
           }
         }
@@ -70,16 +70,13 @@ function App() {
           <header className="App-header">
             <div className='mini-img-container'>
               {
-                (() => {
-                  if(isArrayImg.length !== 0){
-                    for(let i = 0; i < isArrayImg.length; i++){
-                      return(
-                        <img src={`data:image/png;base64,${isArrayImg[i]}`} width="60" height="60"/>
-                      )
-                    }
-                  }
-                })
+                isArrayImg.length !== 0 && (
+                  isArrayImg.map((img, idx) => 
+                    <img key={idx} className='img-mini' src={`data:image/png;base64,${img}`} width="60" height="60"/>
+                  )
+                )
               }
+
             </div>
             <div>
               {
